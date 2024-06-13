@@ -10,7 +10,7 @@ app = Flask(__name__)
 interpreter = tf.lite.Interpreter(model_path="plant_disease_model.tflite")
 interpreter.allocate_tensors()
 
-model = pickle.load(open('modeld.pkl', 'rb'))
+model = pickle.load(open('model.pkl', 'rb'))
 
 # Get input and output tensors
 input_details = interpreter.get_input_details()
