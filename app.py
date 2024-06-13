@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 import torch
 import pickle
 import numpy as np
