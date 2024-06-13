@@ -1,1 +1,1 @@
-plantDisease-resnet34.pth filter=lfs diff=lfs merge=lfs -text
+# plantDisease-resnet34.pth filter=lfs diff=lfs merge=lfs -text
