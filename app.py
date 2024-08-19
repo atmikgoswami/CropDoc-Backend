@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# Load TFLite model and allocate tensors
+# Load TFLite model
 interpreter = tf.lite.Interpreter(model_path="plant_disease_model.tflite")
 interpreter.allocate_tensors()
 
@@ -86,10 +86,8 @@ def predict():
     water = input_data['water']
     season = input_data['season']
 
-    # Ensure the input data is in the correct format for the model
     input_features = np.array([[temperature, humidity, ph, water, season]], dtype=np.float32)
 
-    # Make predictions
     prediction = model.predict(input_features)
 
     # Convert to crop name
@@ -107,7 +105,6 @@ def upload_file():
         return jsonify({'error': 'No selected file'})
 
     if file:
-        # Read image from request directly
         image = Image.open(file.stream)
 
         # Prepare input image
@@ -119,14 +116,12 @@ def upload_file():
         # Run inference
         interpreter.invoke()
 
-        # Obtain output results from the interpreter
         output_data = interpreter.get_tensor(output_details[0]['index'])
 
-        # Example: Assuming output is probabilities for classification
         predicted_class_index = np.argmax(output_data)
         confidence = output_data[0][predicted_class_index]
 
-        if confidence >= 0.4:
+        if confidence >= 0.5:
             predicted_disease = diseases[predicted_class_index]
         else:
             predicted_disease = "Healthy Leaf"
